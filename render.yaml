@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: raaj-portfolio
+    env: node
+    root: server
+    branch: main
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
