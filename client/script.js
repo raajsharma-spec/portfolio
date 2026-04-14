@@ -28,7 +28,10 @@ const revealObserver = new IntersectionObserver(
   { threshold: 0.12 }
 );
 
-revealElements.forEach((el) => revealObserver.observe(el));
+revealElements.forEach((el, index) => {
+  el.style.transitionDelay = `${index * 70}ms`;
+  revealObserver.observe(el);
+});
 
 if (form) {
   form.addEventListener("submit", async (event) => {
