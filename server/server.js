@@ -7,14 +7,22 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../client")));
+
+// Serve built client in production, raw client in development
+const clientPath = process.env.NODE_ENV === "production" 
+  ? path.join(__dirname, "../client/dist")
+  : path.join(__dirname, "../client");
+app.use(express.static(clientPath));
 
 app.get("/api", (_req, res) => {
   res.json({ message: "Portfolio contact API is running." });
 });
 
 app.get("*", (_req, res) => {
-  res.sendFile(path.join(__dirname, "../client/index.html"));
+  const indexPath = path.join(clientPath, "index.html");
+  res.sendFile(indexPath, (err) => {
+    if (err) res.status(404).json({ error: "Not found" });
+  });
 });
 
 app.post("/contact", (req, res) => {
